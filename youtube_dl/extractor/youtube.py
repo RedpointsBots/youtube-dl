@@ -2394,16 +2394,11 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
 
         def _extract_count(count_name):
             return str_to_int(self._search_regex(
-                r'-%s-button[^>]+><span[^>]+class="yt-uix-button-content"[^>]*>([\d,]+)</span>'
+                r'"accessibilityData":\{"label":"([\d,\w]+) %ss"\}'
                 % re.escape(count_name),
                 video_webpage, count_name, default=None))
 
         like_count = _extract_count('like')
-        if like_count is None:
-            like_count = parse_count(self._search_regex(
-                r'"defaultText":.+?"label":"([\d,\w]+) likes"', video_webpage,
-                'like count', default=None))
-
         dislike_count = _extract_count('dislike')
 
         if view_count is None:
